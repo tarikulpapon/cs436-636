@@ -5,6 +5,7 @@ import supabase from "../config/supabaseClient"
 const Create = () => {
   const navigate = useNavigate()
 
+  const [id, setId] = useState('')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [dob, setDob] = useState('')
@@ -15,14 +16,14 @@ const Create = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (!name || !email || !dob || !address || !gender) {
+    if (!id || !name || !email || !dob || !address || !gender) {
       setFormError('Please fill in all the fields correctly.')
       return
     }
 
     const { data, error } = await supabase
       .from('umb_students')
-      .insert([{ name, email, dob, address, gender }])
+      .insert([{ id, name, email, dob, address, gender }])
 
     if (error) {
       console.log(error)
@@ -38,16 +39,24 @@ const Create = () => {
   return (
     <div className="page create">
       <form onSubmit={handleSubmit}>
+        <label htmlFor="id">Student ID:</label>
+        <input
+          type="text"
+          id="id"
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+        />
+
         <label htmlFor="name">Name:</label>
-        <input 
-          type="text" 
+        <input
+          type="text"
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
 
         <label htmlFor="email">Email:</label>
-        <input 
+        <input
           type="email"
           id="email"
           value={email}
@@ -55,7 +64,7 @@ const Create = () => {
         />
 
         <label htmlFor="dob">Date of Birth:</label>
-        <input 
+        <input
           type="date"
           id="dob"
           value={dob}
@@ -63,14 +72,14 @@ const Create = () => {
         />
 
         <label htmlFor="address">Address:</label>
-        <textarea 
+        <textarea
           id="address"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
         />
 
         <label htmlFor="gender">Gender:</label>
-        <input 
+        <input
           type="text"
           id="gender"
           value={gender}
